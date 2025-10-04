@@ -1,0 +1,54 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "Map1.tmj",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "Map1.tmj": {
+            "scale": 0.75,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 624.6666666666665,
+                "y": 470.66666666666674
+            }
+        },
+        "Map1.tmx": {
+            "scale": 0.73,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 278.0821917808219,
+                "y": 371.91780821917814
+            }
+        },
+        "SpriteSheet.tsx": {
+            "scaleInDock": 0.3719,
+            "scaleInEditor": 1
+        },
+        "untitled.tmx": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 432.5,
+                "y": 350.25
+            }
+        }
+    },
+    "last.imagePath": "/Users/yokyle/Documents/Ludum Dare/58/Assets/Map",
+    "map.lastUsedFormat": "tmx",
+    "openFiles": [
+        "Map1.tmj",
+        "SpriteSheet.tsx"
+    ],
+    "project": "untitled.tiled-project",
+    "recentFiles": [
+        "SpriteSheet.tsx",
+        "Map1.tmj",
+        "untitled.tmx",
+        "Map1.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx"
+}
