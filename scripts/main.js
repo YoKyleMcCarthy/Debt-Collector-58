@@ -41,7 +41,7 @@ window.onload = () => {
     // --- STATE & TIMER INITIALIZATION ---
     const GAME_STATES = { START_MENU: 'start_menu', RUNNING: 'running', GAME_OVER: 'game_over' };
     let currentState = GAME_STATES.START_MENU; // START GAME IN START MENU
-    const MAX_GAME_TIME = 80; // 1:30 minutes
+    const MAX_GAME_TIME = 90; // 1:30 minutes
     let gameTime = MAX_GAME_TIME;
     // --- END STATE & TIMER INITIALIZATION ---
     
@@ -192,12 +192,14 @@ window.onload = () => {
             ctx.font = '24px Inter, sans-serif';
             ctx.fillStyle = 'white';
             ctx.fillText('You are hired as a Debt Collector to smash cars.', canvas.width / 2, canvas.height / 2 - 10);
-            ctx.fillText('Watch out for police officers (future feature) — they will take half your earnings!', canvas.width / 2, canvas.height / 2 + 30);
-            
+            ctx.fillText('Watch out for police officers — they will take half your earnings!', canvas.width / 2, canvas.height / 2 + 30);
+            ctx.fillText('Use W/A/S/D to drive around and collect money by smashing cars.', canvas.width / 2, canvas.height / 2 + 70);
+            ctx.fillText('Press and hold SPACEBAR to boost your speed.', canvas.width / 2, canvas.height / 2 + 110);        
+    
             // Start Prompt
             ctx.font = 'bold 40px Inter, sans-serif';
             ctx.fillStyle = '#32CD32'; 
-            ctx.fillText('PRESS SPACEBAR TO START', canvas.width / 2, canvas.height / 2 + 150);
+            ctx.fillText('PRESS SPACEBAR TO START', canvas.width / 2, canvas.height / 2 + 200);
             
             // --- Developer Credit ---
             ctx.font = '18px Inter, sans-serif';

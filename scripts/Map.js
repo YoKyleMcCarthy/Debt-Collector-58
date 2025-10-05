@@ -237,10 +237,13 @@ draw(ctx, player) {
 
     // Center the camera: shift the world opposite to the player's center,
     // plus half the canvas dimensions.
-    const offsetX = canvasWidth / 2 - playerCenterX;
-    const offsetY = canvasHeight / 2 - playerCenterY;
+    const offsetX = Math.floor(canvasWidth / 2 - playerCenterX);
+    const offsetY = Math.floor(canvasHeight / 2 - playerCenterY);
     
     ctx.translate(offsetX, offsetY);
+
+    // Disable image smoothing for pixel-perfect rendering
+    ctx.imageSmoothingEnabled = false;
 
     // Iterate through each tile layer defined in the map data
     for (const layer of this.data.layers) {
@@ -261,18 +264,18 @@ draw(ctx, player) {
                 const mapCol = i % this.mapWidthInTiles;
                 const mapRow = Math.floor(i / this.mapWidthInTiles);
 
-                const dx = mapCol * this.tileWidth;
-                const dy = mapRow * this.tileHeight;
+                const dx = Math.floor(mapCol * this.tileWidth);
+                const dy = Math.floor(mapRow * this.tileHeight);
 
-                // Draw the tile using ctx.drawImage()
+                // Draw the tile using ctx.drawImage() with pixel-perfect positioning
                 ctx.drawImage(
                     this.spritesheet,     // image
                     coords.sx,            // sx: Source x-coordinate
                     coords.sy,            // sy: Source y-coordinate
                     this.tileWidth,       // sWidth: Source width
                     this.tileHeight,      // sHeight: Source height
-                    dx * multiplier,      // dx: Destination x-coordinate (now affected by ctx.translate)
-                    dy * multiplier,      // dy: Destination y-coordinate (now affected by ctx.translate)
+                    Math.floor(dx * multiplier),      // dx: Destination x-coordinate (pixel-perfect)
+                    Math.floor(dy * multiplier),      // dy: Destination y-coordinate (pixel-perfect)
                     this.tileWidth * multiplier, // dWidth: Destination width
                     this.tileHeight * multiplier // dHeight: Destination height
                 );
