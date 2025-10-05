@@ -7,11 +7,11 @@ class Entity {
         this.h = h;
     }
 
-    update(ctx) {};
+    update(ctx, player) {};
     on_collision(entity) {
-        console.log(`${this.name} collided with ${entity.name}`);
+        // Default collision handler (can be overridden by subclasses)
     }
-    draw(ctx) {};
+    draw(ctx, player) {};
 }
 
 export default Entity;
