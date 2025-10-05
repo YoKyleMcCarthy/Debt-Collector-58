@@ -7,6 +7,8 @@ addEventListener("keyup", e => keys[e.key] = false);
 class Player extends Entity {
     constructor() {
         super("player");
+        this.nitroSoundEffect = document.getElementById('nitroSound');
+        this.engineIdleSound = document.getElementById('engineIdle');
         this.money = 0;
         this.x = 883.63;
         this.y = 525.54;
@@ -16,7 +18,9 @@ class Player extends Entity {
         this.w = 64;
         this.h = 32;
         this.acceleration = 0.05; // Controls how fast velocity increases
-        this.maxSpeed = 1.0;     // NEW: Max speed limit for smoother, controlled play
+        this.baseMaxSpeed = 1.0;  // Base max speed
+        this.boostSpeed = 3.0;    // Speed when spacebar is held down (Boost)
+        this.maxSpeed = this.baseMaxSpeed; // Active max speed
         this.angleSpeed = 2;
         this.hasLoaded = false;
 
@@ -32,16 +36,14 @@ class Player extends Entity {
         return (angle) * Math.PI / 180;
     }
     
-    drawMoney(ctx) {
-        ctx.fillStyle = "white";
-        ctx.font = "20px Arial";
-        ctx.fillText(`Money: $${this.money}`, 20, 30);
+    // drawMoney is now handled by drawHUD in the main game loop
+    drawMoney(ctx) { 
+        // This function is deprecated, but kept here just in case. 
+        // The display logic is now in main_game.js for correct viewport rendering.
     }
 
     /**
      * Collision response: stops the player completely.
-     * Note: For complex movement, a more advanced solution (like pushing the player
-     * outside the collider) would be needed, but this prevents passing through walls.
      */
     on_collision(entity) {
         if (entity.name === "wall") {
@@ -49,14 +51,35 @@ class Player extends Entity {
             this.xVel = 0;
             this.yVel = 0;
         }
-
-
-        // console.log(`Player hit ${entity.name}`);
     }
 
     update(ctx) {
+        // --- SPEED BOOST LOGIC ---
+        // If the spacebar is held, set maxSpeed to boostSpeed, otherwise use base speed.
+        if (keys[" "]) {
+            this.maxSpeed = this.boostSpeed;
+            if(this.nitroSoundEffect.paused) {
+                this.nitroSoundEffect.currentTime = 0;
+                this.nitroSoundEffect.play();
+                this.nitroSoundEffect.volume = 1.0;
+                this.engineIdleSound.pause();
+            }
+        } else {
+            this.maxSpeed = this.baseMaxSpeed;
+            this.nitroSoundEffect.pause();
+            if(this.engineIdleSound.paused) {
+                this.engineIdleSound.currentTime = 0;
+                this.engineIdleSound.play();
+                this.engineIdleSound.volume = 1.0;
+            }
+
+        }
+        
+        // --- END SPEED BOOST LOGIC ---
+
         console.log(`Player position: (${this.x.toFixed(2)}, ${this.y.toFixed(2)}) Angle: ${this.angle.toFixed(2)}° Speed: (${this.xVel.toFixed(2)}, ${this.yVel.toFixed(2)})`);
-        // Handle input
+        
+        // Handle input (Acceleration)
         if (keys["w"]) {
             this.xVel += Math.cos(this.toRadian(this.angle + 90)) * this.acceleration;
             this.yVel += Math.sin(this.toRadian(this.angle + 90)) * this.acceleration;
@@ -65,7 +88,9 @@ class Player extends Entity {
             this.xVel -= Math.cos(this.toRadian(this.angle + 90)) * this.acceleration;
             this.yVel -= Math.sin(this.toRadian(this.angle + 90)) * this.acceleration;
         }
-        if(Math.abs(this.yVel) > 0.0) {
+        
+        // Handle turning (only allowed when there is movement)
+        if(Math.abs(this.xVel) > 0.01 || Math.abs(this.yVel) > 0.01) { // Check velocity magnitude, not just yVel
             if (keys["a"]) {
                 this.angle -= this.angleSpeed;
             }
@@ -77,9 +102,9 @@ class Player extends Entity {
         // Wrap angle
         this.angle = (this.angle + 360) % 360;
 
-        // --- Apply Max Speed Limit ---
+        // --- Apply Active Max Speed Limit ---
         const currentSpeedSq = this.xVel * this.xVel + this.yVel * this.yVel;
-        const maxSpeedSq = this.maxSpeed * this.maxSpeed;
+        const maxSpeedSq = this.maxSpeed * this.maxSpeed; // Uses active maxSpeed (base or boost)
 
         if (currentSpeedSq > maxSpeedSq) {
             const currentSpeed = Math.sqrt(currentSpeedSq);
@@ -87,7 +112,7 @@ class Player extends Entity {
             this.xVel = (this.xVel / currentSpeed) * this.maxSpeed;
             this.yVel = (this.yVel / currentSpeed) * this.maxSpeed;
         }
-        // ------------------------------
+        // ------------------------------------
 
         // Apply velocity
         this.x += this.xVel;
@@ -98,8 +123,6 @@ class Player extends Entity {
         this.xVel *= friction;
         this.yVel *= friction;
     }
-
-    // In the main game loop, you'll call player.draw(ctx, 6)
 
     draw(ctx, player, multiplier = 2) {
         if (!this.hasLoaded) return;

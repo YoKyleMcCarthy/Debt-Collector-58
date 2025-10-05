@@ -4,7 +4,13 @@ import NPC from "./NPC.js";
 import Map from "./Map.js"
 
 
+
 window.onload = () => {
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    backgroundMusic.volume = 0.04; // Set volume to 20%
+    backgroundMusic.play().catch((error) => {
+        console.log("Background music play was prevented:", error);
+    });
     let canvas;
     let ctx;
     let player = new Player();
@@ -33,7 +39,7 @@ window.onload = () => {
     // --- STATE & TIMER INITIALIZATION ---
     const GAME_STATES = { START_MENU: 'start_menu', RUNNING: 'running', GAME_OVER: 'game_over' };
     let currentState = GAME_STATES.START_MENU; // START GAME IN START MENU
-    const MAX_GAME_TIME = 1000; // 30 seconds
+    const MAX_GAME_TIME = 80; // 1:30 minutes
     let gameTime = MAX_GAME_TIME;
     // --- END STATE & TIMER INITIALIZATION ---
     

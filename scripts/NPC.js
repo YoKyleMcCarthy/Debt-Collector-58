@@ -53,7 +53,7 @@ class NPC extends Entity {
             {x: 464.27, y: 654.82, hasPassed: false},
             {x: 464.46, y: 74.56, hasPassed: false},
             {x: 210.87, y: 72.62, hasPassed: false},
-            {x: 210.90, y: 251.17, hasPassed: false},
+            {x: 210.90, y: 271.17, hasPassed: false},
             {x: 1009.09, y: 271.88, hasPassed: false},
             {x: 984.44, y: 694.14, hasPassed: false},
         ]
@@ -121,6 +121,10 @@ class NPC extends Entity {
     
     on_collision(entity) {
         if(entity.name === "player" && this.name !== "player" && this.name === "Police") {
+            this.policeSiren = document.getElementById('policeSiren');
+            this.policeSiren.currentTime = 0;
+            this.policeSiren.play();
+            this.policeSiren.volume = 1.0;
             console.log("Police Collided with Player! Resetting position.");
             entity.x = 883.63;
             entity.y = 525.54;

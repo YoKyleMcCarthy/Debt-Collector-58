@@ -70,6 +70,10 @@ class EntityManager {
                     }
                     if(e1.name === "player" && e2.name !== "wall" && e2.name !== "Police") {
                         //remove entity if it's not a wall or police
+                        const collisionSound = document.getElementById('collisionSound');
+                        collisionSound.currentTime = 0;
+                        collisionSound.play();
+                        collisionSound.volume = 1.0;
                         this.entities.splice(j, 1);
                         j--; // Adjust index after removal
                         console.log(`Removed entity ${e2.name} after collision with player.`);
