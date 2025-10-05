@@ -75,10 +75,7 @@ class Player extends Entity {
 
         }
         
-        // --- END SPEED BOOST LOGIC ---
-
-        console.log(`Player position: (${this.x.toFixed(2)}, ${this.y.toFixed(2)}) Angle: ${this.angle.toFixed(2)}° Speed: (${this.xVel.toFixed(2)}, ${this.yVel.toFixed(2)})`);
-        
+        // --- END SPEED BOOST LOGIC ---        
         // Handle input (Acceleration)
         if (keys["w"]) {
             this.xVel += Math.cos(this.toRadian(this.angle + 90)) * this.acceleration;

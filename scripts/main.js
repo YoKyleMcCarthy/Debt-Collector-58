@@ -4,13 +4,15 @@ import NPC from "./NPC.js";
 import Map from "./Map.js"
 
 
-
 window.onload = () => {
+    // Find the audio element (assuming it exists in the HTML)
     const backgroundMusic = document.getElementById('backgroundMusic');
-    backgroundMusic.volume = 0.04; // Set volume to 20%
-    backgroundMusic.play().catch((error) => {
-        console.log("Background music play was prevented:", error);
-    });
+    
+    // Set volume immediately. Playback will be triggered by user interaction (Spacebar).
+    if (backgroundMusic) {
+        backgroundMusic.volume = 0.1; // Set volume to a reasonable level (20%)
+    }
+
     let canvas;
     let ctx;
     let player = new Player();
@@ -134,6 +136,14 @@ window.onload = () => {
                 if (currentState === GAME_STATES.START_MENU) {
                     currentState = GAME_STATES.RUNNING;
                     console.log("Game Started!");
+                    
+                    // --- FIX: START MUSIC ON FIRST INTERACTION ---
+                    if (backgroundMusic) {
+                        backgroundMusic.play().catch((error) => {
+                            console.log("Background music play was prevented:", error);
+                        });
+                    }
+                    // --- END FIX ---
                 } else if (currentState === GAME_STATES.GAME_OVER) {
                     resetGame();
                 }
@@ -188,6 +198,12 @@ window.onload = () => {
             ctx.font = 'bold 40px Inter, sans-serif';
             ctx.fillStyle = '#32CD32'; 
             ctx.fillText('PRESS SPACEBAR TO START', canvas.width / 2, canvas.height / 2 + 150);
+            
+            // --- Developer Credit ---
+            ctx.font = '18px Inter, sans-serif';
+            ctx.fillStyle = '#888888'; 
+            ctx.fillText('Made by Kyle McCarthy @ YoKyle.com', canvas.width / 2, canvas.height - 30);
+            // --- End Developer Credit ---
             
             return; 
         }
@@ -244,6 +260,12 @@ window.onload = () => {
             ctx.font = '28px Inter, sans-serif';
             ctx.fillStyle = 'white';
             ctx.fillText('Hit SPACE BAR to Restart', canvas.width / 2, canvas.height / 2 + 120); 
+            
+            // --- Developer Credit ---
+            ctx.font = '18px Inter, sans-serif';
+            ctx.fillStyle = '#888888'; 
+            ctx.fillText('Made by Kyle McCarthy @ YoKyle.com', canvas.width / 2, canvas.height - 30);
+            // --- End Developer Credit ---
         }
     };
     // --- END DRAW OVERLAY FUNCTION ---
